@@ -1,0 +1,31 @@
+
+---
+title: "r-in-production"
+output: html_document
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(usethis)
+library(ggplot2)
+library(lubridate)
+```
+
+```{r}
+now(tzone="")
+```
+
+```{r}
+use_description()
+use_package("ggplot2")
+```
+
+```{r}
+ggplot(diamonds, aes(x = carat, y = price, color = cut)) +
+  geom_point(alpha = 0.5) +
+  theme_minimal() +
+  labs(title = "Diamonds Dataset: Carat vs Price",
+       x = "Carat",
+       y = "Price")
+```
