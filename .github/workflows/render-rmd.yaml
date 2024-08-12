@@ -1,0 +1,49 @@
+name: render
+on:
+  push:
+    branches: main
+permissions:
+  contents: write
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout this repo
+      - uses: actions/checkout@v4
+
+      # Install R
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      # Install R packages
+      - uses: r-lib/actions/setup-r-dependencies@v2
+
+      # Install pandoc
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      # Render the rmarkdown file into rmd/
+      - name: Render Rmarkdown
+        shell: Rscript {0}
+        run: rmarkdown::render("index.Rmd", output_dir = "rmd")
+
+      # Publish rmd/ to GitHub pages
+      - name: Publish to GitHub pages 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.5.0
+        with:
+          folder: rmd
+
+Package: your-package-name
+Type: Project
+Title: A Brief Title for Your Project
+Version: 0.1.0
+Authors@R: person("Your Name", "your-email@example.com", role = c("aut", "cre"))
+Description: A brief description of your project.
+License: What license it uses
+Encoding: UTF-8
+LazyData: true
+Depends: 
+    R (>= 4.0)
+Imports: 
+    ggplot2,
+    rmarkdown
